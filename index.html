@@ -18,14 +18,31 @@
     <div id="root">
         <div class="container pt-4">
             <div class="d-flex align-intems-center justify-content-center">
-                <input type="text" placeholder="Inserisci le tue Todo">
-                <button class="btn btn-primary ms-3">Nuova Todo</button>
+                <input type="text" placeholder="Inserisci le tue Todo" v-model="inputText" v-on:keyup.enter="aggiuntaTodo">
+                <button @click="aggiuntaTodo()" class="btn btn-primary ms-3">Nuova Todo</button>
+                
+                
             </div>
 
-            <div>
-                <ul class="list-group list-group-flush">
-                    <li v-for="(elem, index) in todoList" class="list-group-item">
-                        {{elem.text}}
+            <div class="mt-5 p-5 bg-light">
+                <ul class="list-group list-group-flush" v-if="todoList.length > 0">
+                    <li v-for="(elem, index) in todoList" :key="index"
+                        class="list-group-item d-flex justify-content-between align-intems-center">
+                        <span @click="aggiuntaBarra(index, elem)"
+                            :class="(elem.bool == true) ? 'text-decoration-line-through' : ''">{{elem.text}}</span>
+                        <i class="fa-solid fa-xmark text-danger" @click="rimozioneElemento(index, elem)"></i>
+                    </li>
+                </ul>
+                <h2 v-else>La lista Todo è vuota</h2>
+            </div>
+
+            <h2 class="my-5">Todo Eseguite</h2>
+            <div class="p-5 bg-light">
+                <ul class="list-group list-group-flush" v-if="todoEnd.length > 0">
+                    <li v-for="(elem, index) in todoEnd" :key="index"
+                        class="list-group-item d-flex justify-content-between align-intems-center">
+                        <span :class="(elem.bool == true) ? 'text-decoration-line-through' : ''">{{elem.text}}</span>
+                        <i class="fa-solid fa-xmark text-danger" @click="rimozioneElemento(index, elem)"></i>
                     </li>
                 </ul>
             </div>
